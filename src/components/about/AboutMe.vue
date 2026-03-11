@@ -34,9 +34,10 @@ onMounted(() => {
       <div class="w-full h-1 bg-second/50 my-7 rounded-full"></div>
 
       <p class=" my-7 text-justify">
-         I'm a junior year Computer Science major at the University of Engineering and Technology in Vietnam, with a
-         strong passion for full-stack development.
-         I specialize in building beautiful and functional websites.
+         I'm a third-year Computer Science student at VNU University of Engineering and Technology (VNU-UET), expected
+         to graduate in early 2027. Proficient with frameworks such as Next.js, Spring, and Echo, and tools including
+         Docker and Linux, with experience in API design (RESTful, GraphQL), distributed systems, and AI/LLM
+         integration.
       </p>
 
       <div class="w-full h-1 bg-second/50 my-7 rounded-full"></div>
@@ -52,13 +53,12 @@ onMounted(() => {
                </div>
                <div class=" grid grid-cols-2 md:grid-cols-3">
                   <span class="pl-[0%] md:pl-0  md:text-left col-span-1 font-semibold text-gray-600  ">Age:</span>
-                  <span class=" text-right pr-[0%] md:pr-0 md:text-left text-main  md:col-span-2">19 Years</span>
+                  <span class=" text-right pr-[0%] md:pr-0 md:text-left text-main  md:col-span-2">20 Years</span>
                </div>
                <div class=" grid grid-cols-2 md:grid-cols-3">
                   <span
                      class="pl-[0%] md:pl-0  md:text-left col-span-1 font-semibold text-gray-600  ">Occupation:</span>
-                  <span class="text-right pr-[0%] md:pr-0  md:text-left text-main  md:col-span-2">Fullstacks
-                     Developer</span>
+                  <span class="text-right pr-[0%] md:pr-0  md:text-left text-main  md:col-span-2">Software Engineer</span>
                </div>
             </div>
 
@@ -77,13 +77,13 @@ onMounted(() => {
                <div class="grid grid-cols-2 md:grid-cols-11">
                   <span
                      class="pl-[0%] md:pl-0  md:text-left font-semibold text-gray-600 md:col-span-3 ">Experience:</span>
-                  <span class="text-right pr-[0%] md:pr-0  md:text-left text-main  md:col-span-8">Under one year</span>
+                  <span class="text-right pr-[0%] md:pr-0  md:text-left text-main  md:col-span-8">One year</span>
                </div>
             </div>
          </div>
       </div>
 
-      <GetCVButton buttonLink="#about" buttonText="Download My CV">
+      <GetCVButton buttonLink="/TranXuanPhong_CV_T2_2027.pdf" buttonText="Download My CV" :openInNewTab="true">
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
             class="size-6 animate-bounce">
             <path stroke-linecap="round" stroke-linejoin="round"

@@ -2,51 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 html {
-    width: 100vw;
-    scroll-behavior: smooth;
-    overflow-x: hidden;
+   width: 100vw;
+   scroll-behavior: smooth;
+   overflow-x: hidden;
 }
 body {
-    @apply bg-background;
-    position: relative;
+   @apply bg-background;
+   position: relative;
 }
 
 body::-webkit-scrollbar {
-    /* display: none; */
+   /* display: none; */
 }
 .maven-pro {
-    font-family: "Maven Pro", sans-serif;
-    font-optical-sizing: auto;
-    font-style: normal;
+   font-family: "Maven Pro", sans-serif;
+   font-optical-sizing: auto;
+   font-style: normal;
 }
 .hammersmith-one-regular {
-    font-family: "Hammersmith One", sans-serif;
-    font-weight: 400;
-    font-style: normal;
+   font-family: "Hammersmith One", sans-serif;
+   font-weight: 400;
+   font-style: normal;
 }
 
 /* typedjs */
 .typed-cursor {
-    opacity: 1;
-    animation: typedjsBlink 0.7s infinite;
-    -webkit-animation: typedjsBlink 0.7s infinite;
+   opacity: 1;
+   animation: typedjsBlink 0.7s infinite;
+   -webkit-animation: typedjsBlink 0.7s infinite;
 }
 
 /* Custom Scrollbar */
 body::-webkit-scrollbar {
-    display: none;
+   /* display: none; */
 
-    /* position: fixed; */
-    /* z-index: 9999; */
+   /* position: fixed; */
+   /* z-index: 9999; */
 }
 .parallax-tilt-parent {
-    transform-style: preserve-3d;
+   transform-style: preserve-3d;
 }
 a {
-    user-select: none;
-    -webkit-user-drag: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+   user-select: none;
+   -webkit-user-drag: none;
+   -webkit-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
 }

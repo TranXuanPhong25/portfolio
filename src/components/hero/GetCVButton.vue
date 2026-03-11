@@ -1,12 +1,16 @@
 <script setup lang="ts">
 defineProps({
    buttonText: String,
-   buttonLink: String
+   buttonLink: String,
+   openInNewTab: {
+      type: Boolean,
+      default: false
+   }
 })
 </script>
 <template>
    <div class="flex w-full justify-center mt-8" data-aos="zoom-out-up">
-      <a :href="buttonLink" class="cssbuttons-io-button dbutton">
+      <a :href="buttonLink" class="cssbuttons-io-button dbutton" :target="openInNewTab === true ? '_blank' : '_self'" rel="noopener noreferrer">
          {{ buttonText }}
          <div class="getcv-subicon">
             <slot></slot>
