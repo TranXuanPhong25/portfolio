@@ -100,116 +100,115 @@ onUnmounted(() => {
 </script>
 
 <template>
-   <section id="projects" class="bg-second/70 w-full py-20 px-4" ref="grid">
+   <section id="projects" class="bg-second/70 w-full py-20 px-4">
       <!-- Section header -->
-      <div class="container mx-auto text-center mb-14" data-aos="fade-up">
-         <h2 class="text-4xl sm:text-7xl font-bold">Projects</h2>
-         <p class="mt-4 max-w-2xl mx-auto text-lg opacity-70">Things I've built.</p>
+      <div class="container mx-auto text-center mb-16" data-aos="fade-down" data-aos-easing="ease-out-bounce">
+         <div class="inline-block px-4 py-2 bg-main/20 text-main rounded-full font-bold mb-4 border border-main/50">My Work</div>
+         <h2 class="text-4xl sm:text-7xl font-extrabold text-last tracking-tight">Showcase</h2>
+         <p class="mt-4 max-w-2xl mx-auto text-xl opacity-80 text-last">Playful pixels, serious logic. 🕹️</p>
       </div>
 
       <!-- Bento grid -->
-      <div class="bento-grid max-w-7xl mx-auto">
+      <div class="bento-grid max-w-7xl mx-auto px-2">
 
          <!-- Featured projects — 2-col row -->
-         <div class="bento-row-featured">
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-6 lg:mb-8">
             <div
-               v-for="p in projectsData.filter(p => p.featured)"
+               v-for="(p, i) in projectsData.filter(p => p.featured)"
                :key="p.title"
-               class="project-card featured-card"
-               data-aos="fade-up"
+               class="group group-hover-bento bento-card flex flex-col relative bg-background border-[4px] overflow-hidden cursor-pointer"
+               :style="{ borderColor: 'transparent', '--hover-color': p.accentColor }"
+               data-aos="zoom-in-up"
+               :data-aos-delay="i * 100"
                @click="openModal(p)"
             >
                <!-- Thumbnail -->
-               <div class="card-thumb">
-                  <img v-if="p.image" :src="p.image" :alt="p.title" class="w-full h-full object-cover" />
+               <div class="card-thumb relative w-full h-[220px] md:h-[280px] overflow-hidden shrink-0 rounded-t-3xl sm:rounded-t-[2.5rem]">
+                  <img v-if="p.image" :src="p.image" :alt="p.title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   <div v-else :class="'w-full h-full bg-gradient-to-br ' + p.gradient"></div>
-                  <div class="thumb-overlay">
-                     <span class="view-detail-hint">View Details</span>
+                  <div class="absolute inset-0 bg-black/30 group-hover:bg-transparent transition-colors duration-500"></div>
+                  <!-- Floating badge -->
+                  <div class="absolute top-4 right-4 bg-white/10 backdrop-blur-md border-[2px] text-white px-3 py-1 font-bold text-xs rounded-full z-10" :style="{ borderColor: p.accentColor }">
+                      {{ p.period }}
                   </div>
                </div>
 
                <!-- Body -->
-               <div class="card-body">
-                  <h3 class="card-title">{{ p.title }}</h3>
-                  <div class="card-tags">
-                     <span v-for="tag in p.tags" :key="tag" class="tag">{{ tag }}</span>
+               <div class="card-body p-6 sm:p-8 flex-1 flex flex-col justify-center bg-background rounded-b-3xl sm:rounded-b-[2.5rem] z-10 transition-colors duration-300 group-hover:bg-slate-800">
+                  <h3 class="text-3xl font-black mb-2 text-last transition-colors" :style="{ color: 'white' }">{{ p.title }}</h3>
+                  
+                  <div class="flex flex-wrap gap-2 mt-4">
+                     <span 
+                        v-for="tag in p.tags" 
+                        :key="tag" 
+                        class="px-3 py-1 text-xs font-bold rounded-xl border-2 transition-all group-hover:-translate-y-1"
+                        :style="{ backgroundColor: p.accentColor + '20', color: p.accentColor, borderColor: p.accentColor + '50' }"
+                     >
+                        {{ tag }}
+                     </span>
                   </div>
                </div>
-
-               <!-- Glow effect layer -->
-               <div class="card-glow"></div>
             </div>
          </div>
 
-         <!-- Smaller projects — 2-col row -->
-         <div class="bento-row-small">
+         <!-- Smaller projects — 3-col row -->
+         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             <div
-               v-for="p in projectsData.filter(p => !p.featured)"
+               v-for="(p, i) in projectsData.filter(p => !p.featured)"
                :key="p.title"
-               class="project-card small-card"
-               data-aos="fade-up"
+               class="group bento-card small-card bg-background border-[4px] overflow-hidden cursor-pointer flex flex-col"
+               :style="{ borderColor: 'transparent', '--hover-color': p.accentColor }"
+               data-aos="zoom-in-up"
+               :data-aos-delay="i * 100"
                @click="openModal(p)"
             >
                <!-- Thumbnail -->
-               <div class="small-thumb">
-                  <img v-if="p.image" :src="p.image" :alt="p.title" class="w-full h-full object-cover duration-500" />
-                  <div v-else :class="'w-full h-full bg-gradient-to-br ' + p.gradient + ' duration-300'"></div>
-                  <div class="thumb-overlay">
-                     <span class="view-detail-hint">View Details</span>
-                  </div>
+               <div class="relative w-full h-[180px] overflow-hidden shrink-0 rounded-t-3xl sm:rounded-t-[2.5rem]">
+                  <img v-if="p.image" :src="p.image" :alt="p.title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <div v-else :class="'w-full h-full bg-gradient-to-br ' + p.gradient"></div>
                </div>
 
                <!-- Body -->
-               <div class="card-body">
-                  <h3 class="text-xl font-bold text-white mb-1">{{ p.title }}</h3>
-                  <div class="card-tags mt-3">
-                     <span v-for="tag in p.tags" :key="tag" class="tag">{{ tag }}</span>
+               <div class="p-6 flex-1 flex flex-col z-10 bg-background rounded-b-3xl sm:rounded-b-[2.5rem] transition-colors group-hover:bg-slate-800">
+                  <h3 class="text-2xl font-black text-last mb-3">{{ p.title }}</h3>
+                  <div class="flex flex-wrap gap-2 mt-auto">
+                     <span v-for="tag in p.tags.slice(0, 3)" :key="tag" class="text-xs font-bold px-2 py-1 rounded-lg bg-last/10 text-last">{{ tag }}</span>
+                     <span v-if="p.tags.length > 3" class="text-xs font-bold px-2 py-1 rounded-lg bg-last/10 text-last">+{{ p.tags.length - 3 }}</span>
                   </div>
                </div>
-
-               <!-- Glow effect layer -->
-               <div class="card-glow"></div>
             </div>
          </div>
       </div>
 
-      <!-- Modal -->
+      <!-- Modal (Playful Style) -->
       <Teleport to="body">
-         <Transition name="modal">
-            <div v-if="selectedProject" class="modal-backdrop" @click.self="closeModal">
-               <div class="modal-panel" role="dialog" aria-modal="true">
-                  <!-- Close button -->
-                  <button class="modal-close" @click="closeModal" aria-label="Close">
-                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                     </svg>
+         <Transition name="bounce">
+            <div v-if="selectedProject" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" @click.self="closeModal">
+               <div class="modal-panel bg-background w-full max-w-2xl rounded-[3rem] border-4 overflow-hidden relative shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] flex flex-col max-h-[90vh]" :style="{ borderColor: selectedProject.accentColor }">
+                  <!-- Close btn -->
+                  <button class="absolute top-4 right-4 z-50 p-2 bg-black/50 hover:bg-black text-white rounded-full transition-transform hover:scale-110 active:scale-95" @click="closeModal">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
                   </button>
 
-                  <!-- Thumbnail -->
-                  <div class="modal-thumb">
-                     <img v-if="selectedProject.image" :src="selectedProject.image" :alt="selectedProject.title" class="w-full h-full object-cover" />
+                  <div class="relative w-full h-[250px] shrink-0">
+                     <img v-if="selectedProject.image" :src="selectedProject.image" class="w-full h-full object-cover" />
                      <div v-else :class="'w-full h-full bg-gradient-to-br ' + selectedProject.gradient"></div>
-                     <span class="period-badge">{{ selectedProject.period }}</span>
                   </div>
 
-                  <!-- Content -->
-                  <div class="modal-content">
-                     <h3 class="modal-title">{{ selectedProject.title }}</h3>
-                     <p class="modal-desc">{{ selectedProject.description }}</p>
-
-                     <div class="card-tags mt-4">
-                        <span v-for="tag in selectedProject.tags" :key="tag" class="tag">{{ tag }}</span>
+                  <div class="p-8 sm:p-10 overflow-y-auto">
+                     <h3 class="text-4xl font-extrabold mb-4" :style="{ color: selectedProject.accentColor }">{{ selectedProject.title }}</h3>
+                     <p class="text-lg leading-relaxed text-last/90 mb-6 font-medium">{{ selectedProject.description }}</p>
+                     
+                     <div class="flex flex-wrap gap-2 mb-8">
+                        <span v-for="tag in selectedProject.tags" :key="tag" class="px-3 py-1.5 text-sm font-bold rounded-xl border-2" :style="{ borderColor: selectedProject.accentColor + '50', color: selectedProject.accentColor, backgroundColor: selectedProject.accentColor + '10' }">{{ tag }}</span>
                      </div>
 
-                     <!-- Links -->
-                     <div class="modal-footer">
-                        <a v-if="selectedProject.demo" :href="selectedProject.demo" target="_blank" rel="noopener noreferrer" class="card-link">
-                           <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-                           Demo
+                     <div class="flex gap-4">
+                        <a v-if="selectedProject.demo" :href="selectedProject.demo" target="_blank" class="flex-1 text-center py-4 rounded-2xl font-black text-background transition-transform hover:-translate-y-1 hover:shadow-lg active:scale-95" :style="{ backgroundColor: selectedProject.accentColor }">
+                           Live Demo
                         </a>
-                        <a :href="selectedProject.repo" target="_blank" rel="noopener noreferrer" class="card-link">
-                           <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="currentColor" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8z"/></svg>
-                           GitHub
+                        <a :href="selectedProject.repo" target="_blank" class="flex-1 text-center py-4 rounded-2xl font-black border-4 transition-transform hover:-translate-y-1 hover:shadow-lg active:scale-95" :style="{ borderColor: selectedProject.accentColor, color: selectedProject.accentColor }">
+                           Source Code
                         </a>
                      </div>
                   </div>
@@ -221,273 +220,37 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* ── Grid layout ─────────────────────────────────── */
-.bento-grid {
-   display: flex;
-   flex-direction: column;
-   gap: 1.5rem;
+/* ── Playful Bento Card Base ─────────────────────── */
+.bento-card {
+   border-radius: 2.5rem;
+   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy / Springy easing */
+   box-shadow: 0 10px 30px -10px rgba(0,0,0,0.2);
 }
 
-.bento-row-featured,
-.bento-row-small {
-   display: grid;
-   gap: 1.5rem;
-   grid-template-columns: repeat(2, 1fr);
+.bento-card:hover {
+   transform: translateY(-8px) scale(1.02);
+   border-color: var(--hover-color);
+   box-shadow: 0 20px 40px -10px var(--hover-color);
 }
 
-@media (max-width: 768px) {
-   .bento-row-featured,
-   .bento-row-small {
-      grid-template-columns: 1fr;
-   }
+/* ── Modal Bounce Animation ──────────────────────── */
+.bounce-enter-active {
+  animation: bounce-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.bounce-leave-active {
+  animation: bounce-in 0.3s reverse ease-in;
+}
+@keyframes bounce-in {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
-/* ── Card base ───────────────────────────────────── */
-.project-card {
-   position: relative;
-   background: #222831;
-   border: 1px solid rgba(255, 255, 255, 0.06);
-   border-radius: 16px;
-   overflow: hidden;
-   display: flex;
-   flex-direction: column;
-   transition: transform 0.3s ease, border-color 0.3s ease;
-   cursor: pointer;
+/* Optional custom scrollbar for modal */
+.modal-panel::-webkit-scrollbar {
+  width: 8px;
 }
-
-.project-card:hover {
-   transform: translateY(-4px);
-   border-color: rgba(78, 204, 163, 0.3);
-}
-
-/* ── Glow effect (mouse-tracked) ─────────────────── */
-.card-glow {
-   pointer-events: none;
-   position: absolute;
-   inset: 0;
-   border-radius: 16px;
-   background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(78, 204, 163, 0.08), transparent 60%);
-   z-index: 1;
-   opacity: 0;
-   transition: opacity 0.3s;
-}
-
-.project-card:hover .card-glow {
-   opacity: 1;
-}
-
-/* ── Thumbnail overlay hint ──────────────────────── */
-.card-thumb,
-.small-thumb {
-   position: relative;
-   width: 100%;
-   overflow: hidden;
-   flex-shrink: 0;
-}
-
-.card-thumb { height: 200px; }
-.small-thumb { height: 150px; }
-
-.thumb-overlay {
-   position: absolute;
-   inset: 0;
-   background: rgba(0, 0, 0, 0.45);
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   opacity: 0;
-   transition: opacity 0.25s ease;
-}
-
-.project-card:hover .thumb-overlay {
-   opacity: 1;
-}
-
-.view-detail-hint {
-   color: #4ECCA3;
-   font-size: 0.85rem;
-   font-weight: 600;
-   letter-spacing: 0.05em;
-   border: 1px solid rgba(78, 204, 163, 0.6);
-   padding: 6px 16px;
-   border-radius: 8px;
-   backdrop-filter: blur(4px);
-}
-
-/* ── Period badge ────────────────────────────────── */
-.period-badge {
-   position: absolute;
-   top: 10px;
-   right: 10px;
-   background: rgba(0, 0, 0, 0.6);
-   backdrop-filter: blur(6px);
-   color: #4ECCA3;
-   font-size: 0.7rem;
-   font-weight: 600;
-   padding: 3px 10px;
-   border-radius: 999px;
-   border: 1px solid rgba(78, 204, 163, 0.4);
-   z-index: 2;
-}
-
-/* ── Card body ───────────────────────────────────── */
-.card-body {
-   padding: 1.25rem 1.25rem 1.25rem;
-   flex: 1;
-   position: relative;
-   z-index: 2;
-}
-
-.card-title {
-   font-size: 1.5rem;
-   font-weight: 700;
-   color: #fff;
-   margin-bottom: 0.5rem;
-}
-
-.card-tags {
-   display: flex;
-   flex-wrap: wrap;
-   gap: 0.4rem;
-   margin-top: 0.5rem;
-}
-
-.tag {
-   font-size: 0.7rem;
-   padding: 2px 10px;
-   border-radius: 999px;
-   border: 1px solid rgba(78, 204, 163, 0.4);
-   color: #4ECCA3;
-   background: rgba(78, 204, 163, 0.07);
-   white-space: nowrap;
-}
-
-/* ── Card footer ─────────────────────────────────── */
-.card-footer {
-   display: flex;
-   gap: 0.75rem;
-   padding: 0.75rem 1.25rem 1.25rem;
-   position: relative;
-   z-index: 2;
-}
-
-.card-link {
-   display: inline-flex;
-   align-items: center;
-   gap: 0.4rem;
-   font-size: 0.8rem;
-   font-weight: 600;
-   color: rgba(255, 255, 255, 0.7);
-   padding: 5px 14px;
-   border: 1px solid rgba(255, 255, 255, 0.12);
-   border-radius: 8px;
-   text-decoration: none;
-   transition: color 0.2s, border-color 0.2s, background 0.2s;
-}
-
-.card-link:hover {
-   color: #4ECCA3;
-   border-color: rgba(78, 204, 163, 0.5);
-   background: rgba(78, 204, 163, 0.08);
-}
-
-/* ── Modal ───────────────────────────────────────── */
-.modal-backdrop {
-   position: fixed;
-   inset: 0;
-   background: rgba(0, 0, 0, 0.75);
-   backdrop-filter: blur(6px);
-   z-index: 1000;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   padding: 1rem;
-}
-
-.modal-panel {
-   position: relative;
-   background: #1a1f27;
-   border: 1px solid rgba(78, 204, 163, 0.2);
-   border-radius: 20px;
-   overflow: hidden;
-   width: 100%;
-   max-width: 560px;
-   max-height: 90vh;
-   overflow-y: auto;
-   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
-}
-
-.modal-close {
-   position: absolute;
-   top: 12px;
-   right: 12px;
-   z-index: 10;
-   background: rgba(0, 0, 0, 0.5);
-   backdrop-filter: blur(4px);
-   border: 1px solid rgba(255, 255, 255, 0.1);
-   color: rgba(255, 255, 255, 0.7);
-   border-radius: 8px;
-   padding: 6px;
-   cursor: pointer;
-   transition: color 0.2s, border-color 0.2s;
-   display: flex;
-   align-items: center;
-}
-
-.modal-close:hover {
-   color: #4ECCA3;
-   border-color: rgba(78, 204, 163, 0.5);
-}
-
-.modal-thumb {
-   position: relative;
-   width: 100%;
-   height: 220px;
-   flex-shrink: 0;
-}
-
-.modal-content {
-   padding: 1.5rem;
-}
-
-.modal-title {
-   font-size: 1.75rem;
-   font-weight: 700;
-   color: #fff;
-   margin-bottom: 0.75rem;
-}
-
-.modal-desc {
-   font-size: 0.9rem;
-   color: rgba(255, 255, 255, 0.7);
-   line-height: 1.7;
-}
-
-.modal-footer {
-   display: flex;
-   gap: 0.75rem;
-   margin-top: 1.25rem;
-}
-
-/* ── Modal transition ────────────────────────────── */
-.modal-enter-active,
-.modal-leave-active {
-   transition: opacity 0.25s ease;
-}
-
-.modal-enter-active .modal-panel,
-.modal-leave-active .modal-panel {
-   transition: transform 0.25s ease, opacity 0.25s ease;
-}
-
-.modal-enter-from,
-.modal-leave-to {
-   opacity: 0;
-}
-
-.modal-enter-from .modal-panel,
-.modal-leave-to .modal-panel {
-   transform: translateY(24px) scale(0.97);
-   opacity: 0;
+.modal-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
 }
 </style>

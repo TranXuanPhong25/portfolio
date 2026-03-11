@@ -125,7 +125,7 @@ const MAIL_URI = "https://mail.google.com/mail/?view=cm&fs=1&to=tranxuanphong265
    font-size: 26px;
    padding: 5px;
    font-weight: 600;
-   border-radius: 4px;
+   border-radius: 2rem;
    z-index: 1;
    transition: all .5s cubic-bezier(0.77, 0, 0.175, 1);
 
@@ -138,7 +138,7 @@ const MAIL_URI = "https://mail.google.com/mail/?view=cm&fs=1&to=tranxuanphong265
    gap: 10px;
    min-height: 40px;
    padding: 5px 10px;
-   border-radius: 4px;
+   border-radius: 2rem;
    z-index: 1;
    background-color: #242a35;
    border: solid 1px #e8e8e82d;
@@ -155,7 +155,7 @@ const MAIL_URI = "https://mail.google.com/mail/?view=cm&fs=1&to=tranxuanphong265
    width: 100%;
    margin: 0 auto;
    z-index: -1;
-   border-radius: 4px;
+   border-radius: 2rem;
    transform: translateY(0%);
    background-color: #4ecc74;
    border: solid 1px #3b9476;

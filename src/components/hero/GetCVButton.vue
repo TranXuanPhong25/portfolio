@@ -10,7 +10,8 @@ defineProps({
 </script>
 <template>
    <div class="flex w-full justify-center mt-8" data-aos="zoom-out-up">
-      <a :href="buttonLink" class="cssbuttons-io-button dbutton" :target="openInNewTab === true ? '_blank' : '_self'" rel="noopener noreferrer">
+      <a :href="buttonLink" class="cssbuttons-io-button dbutton" :target="openInNewTab === true ? '_blank' : '_self'"
+         rel="noopener noreferrer">
          {{ buttonText }}
          <div class="getcv-subicon">
             <slot></slot>
@@ -28,7 +29,7 @@ defineProps({
    padding-left: 0.9em;
    font-size: 1.15rem;
    font-weight: 500;
-   border-radius: 4px;
+   border-radius: 994px;
    border: none;
    letter-spacing: 0.05em;
    display: flex;
@@ -52,7 +53,7 @@ defineProps({
    justify-content: center;
    height: 2.2em;
    width: 2.2em;
-   border-radius: 4px;
+   border-radius: 994px;
 
    /* box-shadow: 0.1em 0.1em 0.6em 0.2em #4ECCA3; */
    right: 0.3em;
