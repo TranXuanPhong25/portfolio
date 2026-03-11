@@ -1,7 +1,20 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
-const projectsData = [
+interface Project {
+   title: string;
+   description: string;
+   image: string;
+   gradient: string;
+   accentColor: string;
+   period: string;
+   tags: string[];
+   repo: string;
+   demo: string;
+   featured: boolean;
+}
+
+const projectsData: Project[] = [
    {
       title: 'Shopiew',
       description: 'Microservices, event-driven marketplace platform. Applied Saga, Outbox, Cache-aside patterns with Kafka, Debezium, Redis. Integrated Gemini chatbot for recommendations. Deployed on K3s with Envoy Gateway + OPA for auth/routing.',
@@ -50,9 +63,24 @@ const projectsData = [
       demo: 'https://portfoliov1-txphong25.vercel.app/',
       featured: false,
    }
-]
+];
 
 const grid = ref<HTMLElement | null>(null);
+const selectedProject = ref<Project | null>(null);
+
+function openModal(p: Project) {
+   selectedProject.value = p;
+   document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+   selectedProject.value = null;
+   document.body.style.overflow = '';
+}
+
+function onKeydown(e: KeyboardEvent) {
+   if (e.key === 'Escape') closeModal();
+}
 
 onMounted(() => {
    grid.value?.addEventListener('mousemove', (e: MouseEvent) => {
@@ -62,6 +90,12 @@ onMounted(() => {
          card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
       });
    });
+   window.addEventListener('keydown', onKeydown);
+});
+
+onUnmounted(() => {
+   window.removeEventListener('keydown', onKeydown);
+   document.body.style.overflow = '';
 });
 </script>
 
@@ -83,34 +117,23 @@ onMounted(() => {
                :key="p.title"
                class="project-card featured-card"
                data-aos="fade-up"
+               @click="openModal(p)"
             >
                <!-- Thumbnail -->
-               <div class="card-thumb group">
+               <div class="card-thumb">
                   <img v-if="p.image" :src="p.image" :alt="p.title" class="w-full h-full object-cover" />
                   <div v-else :class="'w-full h-full bg-gradient-to-br ' + p.gradient"></div>
-                  <!-- Floating accent label -->
-                  <span class="period-badge">{{ p.period }}</span>
+                  <div class="thumb-overlay">
+                     <span class="view-detail-hint">View Details</span>
+                  </div>
                </div>
 
                <!-- Body -->
                <div class="card-body">
                   <h3 class="card-title">{{ p.title }}</h3>
-                  <p class="card-desc">{{ p.description }}</p>
                   <div class="card-tags">
                      <span v-for="tag in p.tags" :key="tag" class="tag">{{ tag }}</span>
                   </div>
-               </div>
-
-               <!-- Footer links -->
-               <div class="card-footer">
-                  <a v-if="p.demo" :href="p.demo" target="_blank" rel="noopener noreferrer" class="card-link">
-                     <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-                     Demo
-                  </a>
-                  <a :href="p.repo" target="_blank" rel="noopener noreferrer" class="card-link">
-                     <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="currentColor" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8z"/></svg>
-                     GitHub
-                  </a>
                </div>
 
                <!-- Glow effect layer -->
@@ -125,33 +148,23 @@ onMounted(() => {
                :key="p.title"
                class="project-card small-card"
                data-aos="fade-up"
+               @click="openModal(p)"
             >
                <!-- Thumbnail -->
-               <div class="small-thumb group">
-                  <img v-if="p.image" :src="p.image" :alt="p.title" class="w-full h-full object-cover group-hover:scale-105 duration-500" />
-                  <div v-else :class="'w-full h-full bg-gradient-to-br ' + p.gradient + ' group-hover:brightness-110 duration-300'"></div>
-                  <span class="period-badge">{{ p.period }}</span>
+               <div class="small-thumb">
+                  <img v-if="p.image" :src="p.image" :alt="p.title" class="w-full h-full object-cover duration-500" />
+                  <div v-else :class="'w-full h-full bg-gradient-to-br ' + p.gradient + ' duration-300'"></div>
+                  <div class="thumb-overlay">
+                     <span class="view-detail-hint">View Details</span>
+                  </div>
                </div>
 
                <!-- Body -->
                <div class="card-body">
                   <h3 class="text-xl font-bold text-white mb-1">{{ p.title }}</h3>
-                  <p class="text-sm opacity-70 leading-relaxed">{{ p.description }}</p>
                   <div class="card-tags mt-3">
                      <span v-for="tag in p.tags" :key="tag" class="tag">{{ tag }}</span>
                   </div>
-               </div>
-
-               <!-- Footer links -->
-               <div class="card-footer">
-                  <a v-if="p.demo" :href="p.demo" target="_blank" rel="noopener noreferrer" class="card-link">
-                     <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-                     Demo
-                  </a>
-                  <a :href="p.repo" target="_blank" rel="noopener noreferrer" class="card-link">
-                     <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="currentColor" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8z"/></svg>
-                     GitHub
-                  </a>
                </div>
 
                <!-- Glow effect layer -->
@@ -159,6 +172,51 @@ onMounted(() => {
             </div>
          </div>
       </div>
+
+      <!-- Modal -->
+      <Teleport to="body">
+         <Transition name="modal">
+            <div v-if="selectedProject" class="modal-backdrop" @click.self="closeModal">
+               <div class="modal-panel" role="dialog" aria-modal="true">
+                  <!-- Close button -->
+                  <button class="modal-close" @click="closeModal" aria-label="Close">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                     </svg>
+                  </button>
+
+                  <!-- Thumbnail -->
+                  <div class="modal-thumb">
+                     <img v-if="selectedProject.image" :src="selectedProject.image" :alt="selectedProject.title" class="w-full h-full object-cover" />
+                     <div v-else :class="'w-full h-full bg-gradient-to-br ' + selectedProject.gradient"></div>
+                     <span class="period-badge">{{ selectedProject.period }}</span>
+                  </div>
+
+                  <!-- Content -->
+                  <div class="modal-content">
+                     <h3 class="modal-title">{{ selectedProject.title }}</h3>
+                     <p class="modal-desc">{{ selectedProject.description }}</p>
+
+                     <div class="card-tags mt-4">
+                        <span v-for="tag in selectedProject.tags" :key="tag" class="tag">{{ tag }}</span>
+                     </div>
+
+                     <!-- Links -->
+                     <div class="modal-footer">
+                        <a v-if="selectedProject.demo" :href="selectedProject.demo" target="_blank" rel="noopener noreferrer" class="card-link">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                           Demo
+                        </a>
+                        <a :href="selectedProject.repo" target="_blank" rel="noopener noreferrer" class="card-link">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="currentColor" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8z"/></svg>
+                           GitHub
+                        </a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </Transition>
+      </Teleport>
    </section>
 </template>
 
@@ -194,7 +252,7 @@ onMounted(() => {
    display: flex;
    flex-direction: column;
    transition: transform 0.3s ease, border-color 0.3s ease;
-   cursor: default;
+   cursor: pointer;
 }
 
 .project-card:hover {
@@ -218,22 +276,42 @@ onMounted(() => {
    opacity: 1;
 }
 
-/* ── Featured card thumbnail ─────────────────────── */
-.card-thumb {
+/* ── Thumbnail overlay hint ──────────────────────── */
+.card-thumb,
+.small-thumb {
    position: relative;
    width: 100%;
-   height: 200px;
    overflow: hidden;
    flex-shrink: 0;
 }
 
-/* ── Small card thumbnail ────────────────────────── */
-.small-thumb {
-   position: relative;
-   width: 100%;
-   height: 150px;
-   overflow: hidden;
-   flex-shrink: 0;
+.card-thumb { height: 200px; }
+.small-thumb { height: 150px; }
+
+.thumb-overlay {
+   position: absolute;
+   inset: 0;
+   background: rgba(0, 0, 0, 0.45);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   opacity: 0;
+   transition: opacity 0.25s ease;
+}
+
+.project-card:hover .thumb-overlay {
+   opacity: 1;
+}
+
+.view-detail-hint {
+   color: #4ECCA3;
+   font-size: 0.85rem;
+   font-weight: 600;
+   letter-spacing: 0.05em;
+   border: 1px solid rgba(78, 204, 163, 0.6);
+   padding: 6px 16px;
+   border-radius: 8px;
+   backdrop-filter: blur(4px);
 }
 
 /* ── Period badge ────────────────────────────────── */
@@ -254,7 +332,7 @@ onMounted(() => {
 
 /* ── Card body ───────────────────────────────────── */
 .card-body {
-   padding: 1.25rem 1.25rem 0.75rem;
+   padding: 1.25rem 1.25rem 1.25rem;
    flex: 1;
    position: relative;
    z-index: 2;
@@ -267,17 +345,11 @@ onMounted(() => {
    margin-bottom: 0.5rem;
 }
 
-.card-desc {
-   font-size: 0.875rem;
-   color: rgba(255, 255, 255, 0.65);
-   line-height: 1.6;
-}
-
 .card-tags {
    display: flex;
    flex-wrap: wrap;
    gap: 0.4rem;
-   margin-top: 0.85rem;
+   margin-top: 0.5rem;
 }
 
 .tag {
@@ -317,5 +389,105 @@ onMounted(() => {
    color: #4ECCA3;
    border-color: rgba(78, 204, 163, 0.5);
    background: rgba(78, 204, 163, 0.08);
+}
+
+/* ── Modal ───────────────────────────────────────── */
+.modal-backdrop {
+   position: fixed;
+   inset: 0;
+   background: rgba(0, 0, 0, 0.75);
+   backdrop-filter: blur(6px);
+   z-index: 1000;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 1rem;
+}
+
+.modal-panel {
+   position: relative;
+   background: #1a1f27;
+   border: 1px solid rgba(78, 204, 163, 0.2);
+   border-radius: 20px;
+   overflow: hidden;
+   width: 100%;
+   max-width: 560px;
+   max-height: 90vh;
+   overflow-y: auto;
+   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+}
+
+.modal-close {
+   position: absolute;
+   top: 12px;
+   right: 12px;
+   z-index: 10;
+   background: rgba(0, 0, 0, 0.5);
+   backdrop-filter: blur(4px);
+   border: 1px solid rgba(255, 255, 255, 0.1);
+   color: rgba(255, 255, 255, 0.7);
+   border-radius: 8px;
+   padding: 6px;
+   cursor: pointer;
+   transition: color 0.2s, border-color 0.2s;
+   display: flex;
+   align-items: center;
+}
+
+.modal-close:hover {
+   color: #4ECCA3;
+   border-color: rgba(78, 204, 163, 0.5);
+}
+
+.modal-thumb {
+   position: relative;
+   width: 100%;
+   height: 220px;
+   flex-shrink: 0;
+}
+
+.modal-content {
+   padding: 1.5rem;
+}
+
+.modal-title {
+   font-size: 1.75rem;
+   font-weight: 700;
+   color: #fff;
+   margin-bottom: 0.75rem;
+}
+
+.modal-desc {
+   font-size: 0.9rem;
+   color: rgba(255, 255, 255, 0.7);
+   line-height: 1.7;
+}
+
+.modal-footer {
+   display: flex;
+   gap: 0.75rem;
+   margin-top: 1.25rem;
+}
+
+/* ── Modal transition ────────────────────────────── */
+.modal-enter-active,
+.modal-leave-active {
+   transition: opacity 0.25s ease;
+}
+
+.modal-enter-active .modal-panel,
+.modal-leave-active .modal-panel {
+   transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+   opacity: 0;
+}
+
+.modal-enter-from .modal-panel,
+.modal-leave-to .modal-panel {
+   transform: translateY(24px) scale(0.97);
+   opacity: 0;
 }
 </style>
