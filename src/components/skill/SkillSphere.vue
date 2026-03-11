@@ -6,26 +6,32 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 const container = ref(null);
 
 const RADIUS = 2;
-const ICONS_PER_RING = 4;
+const ICONS_PER_RING = 5;
 const NUM_OF_RING = 4;
 
 const ICONS_TEXTURE = [
-   "/img/skill/icons8-c-144.png",
+   "/img/skill/icons8-react-native-144.png",
    "/img/skill/icons8-vue-js-144.png",
    "/img/skill/icons8-nodejs-144.png",
    "/img/skill/icons8-java-144.png",
    "/img/skill/icons8-git-144.png",
-   "/img/skill/icons8-javascript-144.png",
-   "/img/skill/icons8-html-96.png",
-   "/img/skill/icons8-css-144.png",
    "/img/skill/icons8-tailwind-css-144.png",
    "/img/skill/icons8-typescript-144.png",
-   "/img/skill/icons8-unity-144.png",
-   "/img/skill/icons8-ubuntu-96.png",
-   "/img/skill/icons8-c-sharp-logo-144.png",
    "/img/skill/icons8-postgresql-144.png",
-   "/img/skill/icons8-react-native-144.png",
    "/img/skill/icons8-mongodb-144.png",
+   "/img/skill/langchain-dark.png",
+   "/img/skill/spring.png",
+   "/img/skill/Go.png",
+   "/img/skill/Docker.png",
+   "/img/skill/Kubernetes.png",
+   "/img/skill/FastAPI.png",
+   "/img/skill/Python.png",
+   "/img/skill/Redis.png",
+   "/img/skill/Next.js.png",
+   "/img/skill/Envoy.png",
+   "/img/skill/Linux.png",
+
+
 ];
 let camera, scene, renderer;
 const initThreeJS = () => {

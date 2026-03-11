@@ -34,10 +34,11 @@ onMounted(() => {
       <div class="w-full h-1 bg-second/50 my-7 rounded-full"></div>
 
       <p class=" my-7 text-justify">
-         I'm a third-year Computer Science student at VNU University of Engineering and Technology (VNU-UET), expected
-         to graduate in early 2027. Proficient with frameworks such as Next.js, Spring, and Echo, and tools including
-         Docker and Linux, with experience in API design (RESTful, GraphQL), distributed systems, and AI/LLM
-         integration.
+         I am a third-year Computer Science student at VNU University of Engineering and Technology (VNU-UET),
+         expected to graduate in early 2027. Proficient with frameworks such as Next.js, Spring, and Echo, and tools
+         including Docker and Linux, with experience in debugging and problem solving, version control using Git, and
+         API design and development (RESTful, GraphQL). Additional strengths include the ability to self-learn and
+         research new technologies, along with effective communication and teamwork.
       </p>
 
       <div class="w-full h-1 bg-second/50 my-7 rounded-full"></div>
@@ -83,7 +84,7 @@ onMounted(() => {
          </div>
       </div>
 
-      <GetCVButton buttonLink="/TranXuanPhong_CV_T2_2027.pdf" buttonText="Download My CV" :openInNewTab="true">
+      <GetCVButton buttonLink="https://drive.google.com/file/d/1G4uybudYviD8AaUNy0PhBB0QRYM8fsDt/view?usp=drive_link" buttonText="Download My CV" :openInNewTab="true">
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
             class="size-6 animate-bounce">
             <path stroke-linecap="round" stroke-linejoin="round"

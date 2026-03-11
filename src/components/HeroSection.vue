@@ -10,7 +10,7 @@ let typed: Typed = null;
 
 onMounted(() => {
    typed = new Typed('#typed', {
-      strings: [" Phong ^1500", " a Developer", " a Student"],
+      strings: [" Phong ^1500", " a Software Engineer", " a Tech Enthusiast", " a Lifelong Learner"],
       typeSpeed: 80,
       backSpeed: 50,
       loop: true,
