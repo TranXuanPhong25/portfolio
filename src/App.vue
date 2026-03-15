@@ -3,7 +3,6 @@ import { RouterView } from 'vue-router'
 import HeaderComponent from './components/HeaderComponent.vue'
 import FooterSection from './components/FooterSection.vue';
 import { onMounted, onUnmounted, ref } from 'vue'
-import 'aos/dist/aos.css';
 import FluidContainer from './components/FluidContainer.vue';
 
 import gsap from 'gsap'

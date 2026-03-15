@@ -131,7 +131,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-   <div ref="container" class="icon-cloud" data-aos="zoom-in-down"></div>
+   <div ref="container" class="icon-cloud"></div>
 </template>
 
 <style>

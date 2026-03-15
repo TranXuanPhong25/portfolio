@@ -20,7 +20,7 @@ onMounted(() => {
 })
 </script>
 <template>
-   <div class="wavy" data-aos="zoom-out">
+   <div class="wavy">
       <template v-for="index in words.length" :key="index">
 
          <span v-for="i in words[index - 1].length" :style="'--i:' + (i + (index == 1 ? 0 : suffixSumIndex[index - 2]))"

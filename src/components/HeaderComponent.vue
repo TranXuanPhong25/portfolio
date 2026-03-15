@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import DynamicIslandNav from './header/DynamicIslandNav.vue'
 import StaggeredMenu from './header/StaggeredMenu.vue'
 import CursorEffect from './CursorEffect.vue';
@@ -68,23 +68,33 @@ const handleStaggeredItemClick = (item: { label: string; link: string }) => {
 
 // Auto-hide island on scroll down, show on scroll up
 const header = ref<HTMLElement | null>(null)
+let ctx: gsap.Context
+
 onMounted(() => {
    window.addEventListener('hashchange', changeActiveButton)
    window.addEventListener('pseudohashchange', changeActiveButton)
 
-   ScrollTrigger.create({
-      start: 'top top',
-      end: 'max',
-      onUpdate: (self) => {
-         gsap.to(header.value, {
-            y: self.direction === 1 ? -80 : 0,
-            opacity: self.direction === 1 ? 0 : 1,
-            duration: 0.35,
-            ease: 'power2.out',
-            overwrite: 'auto',
-         })
-      }
+   ctx = gsap.context(() => {
+      ScrollTrigger.create({
+         start: 'top top',
+         end: 'max',
+         onUpdate: (self) => {
+            gsap.to(header.value, {
+               y: self.direction === 1 ? -80 : 0,
+               // opacity: self.direction === 1 ? 0 : 1,
+               duration: 0.35,
+               ease: 'power2.out',
+               overwrite: 'auto',
+            })
+         }
+      })
    })
+})
+
+onUnmounted(() => {
+   window.removeEventListener('hashchange', changeActiveButton)
+   window.removeEventListener('pseudohashchange', changeActiveButton)
+   ctx?.revert()
 })
 
 </script>

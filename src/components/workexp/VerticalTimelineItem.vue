@@ -27,7 +27,7 @@ onMounted(() => {
 <template>
    <div class="vertical-timeline-item flex mb-12 relative"
       :class="{ 'vertical-timeline-item-left': align === 'left', 'vertical-timeline-item-right': align === 'right' }"
-      :data-aos="aos">
+      :>
       <div
          class="vertical-timeline-marker w-10 h-10 rounded-full bg-last absolute top-0 flex justify-center items-center ">
          <slot name="icon"></slot>

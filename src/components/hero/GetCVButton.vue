@@ -9,7 +9,7 @@ defineProps({
 })
 </script>
 <template>
-   <div class="flex w-full justify-center mt-8" data-aos="zoom-out-up">
+   <div class="flex w-full justify-center mt-8">
       <a :href="buttonLink" class="cssbuttons-io-button dbutton" :target="openInNewTab === true ? '_blank' : '_self'"
          rel="noopener noreferrer">
          {{ buttonText }}
